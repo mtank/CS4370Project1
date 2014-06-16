@@ -193,12 +193,30 @@ public class Table
     {
         out.println ("RA> " + name + ".union (" + table2.name + ")");
         if (! compatible (table2)) return null;
-
+        
         List <Comparable []> rows = null;
-
-        //  T O   B E   I M P L E M E N T E D 
-
-        return new Table (name + count++, attribute, domain, key, rows);
+        Table resultTable = new Table (name + count++, attribute, domain, key, rows);
+        
+        // insert tuples of current table
+        tuples.stream().forEach((tuple) -> {
+            resultTable.insert(tuple);
+        });
+        
+        // checks table2 for unique tuples
+        table2.tuples.stream().forEach((tuple1) -> {
+            boolean exists = false;
+            for (Comparable[] tuple : tuples) {
+                if (tuple1 == tuple) {
+                    exists = true;                
+                }
+            }
+            // adds tuples to the resultTable
+            if (!exists) {
+                resultTable.insert(tuple1);
+            }
+        });
+        
+        return resultTable;
     } // union
 
     /************************************************************************************
@@ -216,10 +234,24 @@ public class Table
         if (! compatible (table2)) return null;
 
         List <Comparable []> rows = null;
-
-        //  T O   B E   I M P L E M E N T E D 
-
-        return new Table (name + count++, attribute, domain, key, rows);
+        Table resultTable = new Table (name + count++, attribute, domain, key, rows);
+        
+        for (Comparable[] tuple : tuples) {
+            boolean exists = false;
+            for (Comparable[] tuple1 : table2.tuples) {
+                // checks if the tuple exists in table 2
+                if (tuple == tuple1) {
+                    exists = true;
+                    break;
+                }
+            }
+            // if the tuple doesn't exist in table 2, it's added to the resultTable
+            if (!exists) {
+                resultTable.insert(tuple);
+            }
+        }
+        
+        return resultTable;
     } // minus
 
     /************************************************************************************
