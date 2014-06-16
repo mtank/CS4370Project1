@@ -159,7 +159,13 @@ public class Table
         List <Comparable []> rows = null;
 
         //  T O   B E   I M P L E M E N T E D 
-
+        //data is in tuples
+        try{
+            rows = tuples.stream().filter(predicate).collect(Collectors.toList());
+        }catch(Exception e){
+            System.out.println("Error in select(Predicate <Comparable []> predicate)");
+            e.printStackTrace();
+        }
         return new Table (name + count++, attribute, domain, key, rows);
     } // select
 
@@ -177,6 +183,12 @@ public class Table
         List <Comparable []> rows = null;
 
         //  T O   B E   I M P L E M E N T E D 
+        try{
+            rows = tuples.stream().filter(x -> x.equals(keyVal)).collect(Collectors.toList());
+        }catch(Exception e){
+           System.out.println("Error in select(KeyType keyVal)");
+           e.printStackTrace();
+        }
 
         return new Table (name + count++, attribute, domain, key, rows);
     } // select
