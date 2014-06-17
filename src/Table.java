@@ -242,10 +242,23 @@ public class Table
 
         String [] t_attrs = attributes1.split (" ");
         String [] u_attrs = attributes2.split (" ");
+        
+        boolean conTNU = TRUE;
+        
+        if(t_attrs.length != u_attrs.length){
+            conTNU = false;
+            System.out.println("your attributes were crap and did not have the same number for either table.");
+            return null;
+        }
+        
+        
+        //look through attr arrays and check to see if the domains match
+        //table1 
 
         List <Comparable []> rows = null;
-
-        //  T O   B E   I M P L E M E N T E D 
+        
+        //get the full attribute list of each table
+        //iterate through them and compare the values of the attributes given in the join parameter
 
         return new Table (name + count++, ArrayUtil.concat (attribute, table2.attribute),
                                           ArrayUtil.concat (domain, table2.domain), key, rows);
