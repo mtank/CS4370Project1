@@ -154,6 +154,7 @@ public class Table
      */
     public Table select (Predicate <Comparable []> predicate)
     {
+        //Michael wrote this masterful code
         out.println ("RA> " + name + ".select (" + predicate + ")");
 
         List <Comparable []> rows = null;
@@ -161,8 +162,14 @@ public class Table
         //  T O   B E   I M P L E M E N T E D 
         //data is in tuples
         try{
+            //try to run the tuples through a stream
+            //filter based on the predicate
+            //and add to a list
+            //may not need to b rows=... and can add it to the list in the collect statement
             rows = tuples.stream().filter(predicate).collect(Collectors.toList());
         }catch(Exception e){
+            //unexpected exception because I don't know much on streams
+            //output a message saying were as well as a stack trace
             System.out.println("Error in select(Predicate <Comparable []> predicate)");
             e.printStackTrace();
         }
@@ -178,14 +185,24 @@ public class Table
      */
     public Table select (KeyType keyVal)
     {
+        //Michael wrote this amazingly awesome code as well (other than what Dr. Miller wrote)
         out.println ("RA> " + name + ".select (" + keyVal + ")");
 
         List <Comparable []> rows = null;
 
         //  T O   B E   I M P L E M E N T E D 
         try{
+            //made my own filter here with the keyVal and filtered the stream
+            //with that
+            //if we change the way that I added them to the list in the first method
+            //we may want to do it in the this one as well
             rows = tuples.stream().filter(x -> x.equals(keyVal)).collect(Collectors.toList());
+            //this will need testing
+            //if it does not work we can go filter(x -> x.equals(keyVal)).forEach(rows.add(x))
+            //on the stream
         }catch(Exception e){
+            //potentially unexpected exception
+            //same jazz as above with method name and stack trace
            System.out.println("Error in select(KeyType keyVal)");
            e.printStackTrace();
         }
