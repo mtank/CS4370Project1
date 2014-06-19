@@ -197,6 +197,9 @@ public class Table
             //if we change the way that I added them to the list in the first method
             //we may want to do it in the this one as well
             rows = tuples.stream().filter(x -> x.equals(keyVal)).collect(Collectors.toList());
+            //this will need testing
+            //if it does not work we can go filter(x -> x.equals(keyVal)).forEach(rows.add(x))
+            //on the stream
         }catch(Exception e){
             //potentially unexpected exception
             //same jazz as above with method name and stack trace
