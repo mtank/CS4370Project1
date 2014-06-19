@@ -496,9 +496,19 @@ public class Table
      */
     private boolean typeCheck (Comparable [] t)
     { 
-        //  T O   B E   I M P L E M E N T E D 
+	if (t.length != attribute.length) return false;
+        
+	for (int i = 0; i < domain.length; i++) {
+	    
+	    // checks t's type and compares it to the current domain
+	    if (!t[i].getClass().equals(domain[i].getClass())) {
+		
+		return false;
 
-        return true;
+	    } // if
+	} // for
+
+	return true;
     } // typeCheck
 
     /************************************************************************************
