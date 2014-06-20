@@ -289,23 +289,90 @@ public class Table
         
         boolean conTNU = TRUE;
         
+        //see if the input was formatted properly and if not we print an error
         if(t_attrs.length != u_attrs.length){
             conTNU = false;
             System.out.println("your attributes were crap and did not have the same number for either table.");
             return null;
         }
         
+        //creates a length value for domains and attributes to create a temp result table
+        int attrLen = this.attribute.length + table2.attribute.length;
+        int domLen = this.domain.length + table2.domain.length;
+        //int keyLen = this.key.length + table2.key.length;
         
-        //look through attr arrays and check to see if the domains match
-        //table1 
-
-        List <Comparable []> rows = null;
+        //use the new lengths and create temp attr array and temp domain array
+        String [] jtAttrs = new String[attrLen];
+        Class [] jtDom = new Class[domLen];
+        //String [] jtKey = new String[keyLen];
+        
+        //adds the attrs from the first table to our new attribute list
+        int attrPos = 0;
+        for (String attribute1 : this.attribute) {
+            jtAttrs[attrPos] = attribute1;
+            attrPos++;
+        }
+        //this one fills the new attr arraylist with the attributes from the second table
+        //,but renames them if they are the same as one in the first table
+        for (String attribute1 : table2.attribute) {
+            for (int i = 0; i < this.attribute.length; i++) {
+                if (attribute1.equals(this.attribute[i])) {
+                    String tempAttr = attribute1 + '2';
+                    jtAttrs[attrPos] = tempAttr;
+                    for(int k = 0; k < u_attrs.length; k++){
+                        if(u_attrs[k].equals(attribute1)){
+                            u_attrs[k] = tempAttr;
+                            break;
+                        }
+                    }
+                    break;
+                } else if (i == (this.attribute.length - 1)) {
+                    jtAttrs[attrPos] = attribute1;
+                }
+            }
+            attrPos++;
+        }
+        
+        //fill the new domain arraylist with the domains from the first and second table
+        int domPos = 0;
+        for (Class domain1 : this.domain) {
+            jtDom[domPos] = domain1;
+            domPos++;
+        }
+        for (Class domain1 : table2.domain) {
+            jtDom[domPos] = domain1;
+            domPos++;
+        }
+        
+        //create our temporary result table using the combined attribute and domain arrays
+        Table result = new Table ((name + count++), jtAttrs, jtDom, key);
+        
+        //cartesian product of the 2 arrays
+        for(int i = 0; i < this.tuples.size(); i++){
+            for(int m = 0; m < table2.tuples.size(); m++){
+                Comparable[] tempTup = new Comparable[result.attribute.length];
+                System.arraycopy(this.tuples.get(i), 0, tempTup, 0, this.tuples.get(i).length);
+                System.arraycopy(table2.tuples.get(m), 0, tempTup, this.tuples.get(i).length, table2.tuples.get(m).length);
+                result.insert(tempTup);
+            }
+        }
+        
+        final Table tempTable = result;
+        
+        //build our predicate
+        for(int j = 0; j < t_attrs.length; j++){
+            int temp1 = tempTable.col(t_attrs[j]);
+            int temp2 = tempTable.col(u_attrs[j]);
+            result = tempTable.select(p -> p[temp1].equals (temp2));
+            
+        }
+        
+        //perform select
         
         //get the full attribute list of each table
         //iterate through them and compare the values of the attributes given in the join parameter
 
-        return new Table (name + count++, ArrayUtil.concat (attribute, table2.attribute),
-                                          ArrayUtil.concat (domain, table2.domain), key, rows);
+        return result;
     } // join
 
     /************************************************************************************
