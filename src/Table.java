@@ -139,6 +139,7 @@ public class Table
 
         List <Comparable []> rows = new ArrayList<>();
 
+        //extract the columns needed from the tuples and add them to the list rows
         tuples.stream().forEach((tuple) -> {
             rows.add(this.extract(tuple, attrs));
         });
@@ -161,7 +162,6 @@ public class Table
 
         List <Comparable []> rows = null;
 
-        //  T O   B E   I M P L E M E N T E D 
         //data is in tuples
         try{
             //try to run the tuples through a stream
@@ -192,18 +192,11 @@ public class Table
 
         List <Comparable []> rows = null;
 
-        //  T O   B E   I M P L E M E N T E D 
         try{
-            //made my own filter here with the keyVal and filtered the stream
-            //with that
-            //if we change the way that I added them to the list in the first method
-            //we may want to do it in the this one as well
-            //rows = tuples.stream().filter(x -> x.equals(keyVal)).collect(Collectors.toList());
-            //this will need testing
-            //if it does not work we can go filter(x -> x.equals(keyVal)).forEach(rows.add(x))
-            //on the stream
+            //getting the tuple [] that satisfies the keyVal
             Comparable [] tempTuples = index.get(keyVal);
             if(tempTuples.length > 0){
+                //if the keyVal exists, initialize the List rows and add the tuple [] to rows
                 rows = new ArrayList <> ();
                 rows.add(tempTuples);
             }
