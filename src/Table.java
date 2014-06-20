@@ -137,24 +137,12 @@ public class Table
         Class []  colDomain = extractDom (match (attrs), domain);
         String [] newKey    = (Arrays.asList (attrs).containsAll (Arrays.asList (key))) ? key : attrs;
 
-        List <Comparable []> rows = null;
+        List <Comparable []> rows = new ArrayList<>();
 
-        //  T O   B E   I M P L E M E N T E D 
-        for(int i = 0; i < attrs.length; i++){
-            for(int j = 0; j < key.length; j++){
-                if(attrs[i].equals(key[j])){
-                    temp.add(attrs[i]);
-                }
-            }
-        }
+        tuples.stream().forEach((tuple) -> {
+            rows.add(this.extract(tuple, attrs));
+        });
         
-        if(temp.isEmpty()){
-            newKey = attrs;
-        }
-        else{
-            temp.toArray(newKey);
-        }​
-
         return new Table (name + count++, attrs, colDomain, newKey, rows);
     } // project
 
