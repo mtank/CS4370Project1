@@ -372,18 +372,25 @@ public class Table
             }
         }
         
-        final Table tempTable = result;
-        String [] tempStringArray = new String[1];
+        Table tempTable = result;
+        //String [] tempStringArray = new String[1];
         //build our predicate
-        for(int j = 0; j < t_attrs.length; j++){
+        for(int j = 0; j < t_attrs.length; j++){ 
             int temp1 = tempTable.col(t_attrs[j]);
             for(int q=0; q<u_attrs.length; q++){
-                Comparable [] tempTuple = tuples.get(q); 
-                int temp2 = tempTable.col(u_attrs[q]);
-                tempStringArray[0] = u_attrs[q];
-                Comparable [] tempTuple2 = tempTable.extract(tempTuple, tempStringArray);
-                Comparable tempVal = tempTuple[0];
-                result = tempTable.select(p -> p[temp1].equals (tempVal));
+                for(int m=0; m<tempTable.tuples.size(); m++){
+                    Table tempTable2 = tempTable;
+                    Comparable [] tempTuple = tempTable2.tuples.get(m); 
+                    //int temp2 = tempTable.col(u_attrs[q]);
+                    //tempStringArray[0] = u_attrs[q];
+                    //Comparable [] tempTuple2 = tempTable.extract(tempTuple, tempStringArray);
+                    Comparable tempVal = tempTuple[tempTable2.col(u_attrs[q])];
+                    Table temp = tempTable2.select(p -> p[temp1].equals (tempVal));
+                    tempTable = temp;
+                    for(int h=0; h>temp.tuples.size();h++){
+                        result.insert(temp.tuples.get(h));
+                    }
+                }
             }
         }
         
