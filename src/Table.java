@@ -226,8 +226,7 @@ public class Table
         out.println ("RA> " + name + ".union (" + table2.name + ")");
         if (! compatible (table2)) return null;
         
-        List <Comparable []> rows = null;
-        Table resultTable = new Table (name + count++, attribute, domain, key, rows);
+        Table resultTable = new Table (name + count++, attribute, domain, key);
         
         // insert tuples of current table
         tuples.stream().forEach((tuple) -> {
@@ -265,8 +264,7 @@ public class Table
         out.println ("RA> " + name + ".minus (" + table2.name + ")");
         if (! compatible (table2)) return null;
 
-        List <Comparable []> rows = null;
-        Table resultTable = new Table (name + count++, attribute, domain, key, rows);
+        Table resultTable = new Table (name + count++, attribute, domain, key);
         
         for (Comparable[] tuple : tuples) {
             boolean exists = false;
@@ -601,7 +599,7 @@ public class Table
 	for (int i = 0; i < domain.length; i++) {
 	    
 	    // checks t's type and compares it to the current domain
-	    if (!t[i].getClass().equals(domain[i].getClass())) {
+	    if (t[i].getClass().equals(domain[i].getClass())) {
 		
 		return false;
 
