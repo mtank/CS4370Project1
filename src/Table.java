@@ -140,7 +140,20 @@ public class Table
         List <Comparable []> rows = null;
 
         //  T O   B E   I M P L E M E N T E D 
+        for(int i = 0; i < attrs.length; i++){
+            for(int j = 0; j < key.length; j++){
+                if(attrs[i].equals(key[j])){
+                    temp.add(attrs[i]);
+                }
+            }
+        }
         
+        if(temp.isEmpty()){
+            newKey = attrs;
+        }
+        else{
+            temp.toArray(newKey);
+        }​
 
         return new Table (name + count++, attrs, colDomain, newKey, rows);
     } // project
@@ -202,7 +215,10 @@ public class Table
             //if it does not work we can go filter(x -> x.equals(keyVal)).forEach(rows.add(x))
             //on the stream
             Comparable [] tempTuples = index.get(keyVal);
-            rows.add(tempTuples);
+            if(tempTuples.length > 0){
+                rows = new ArrayList <> ();
+                rows.add(tempTuples);
+            }
         }catch(Exception e){
             //potentially unexpected exception
             //same jazz as above with method name and stack trace
