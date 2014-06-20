@@ -86,12 +86,12 @@ class MovieDB
         studio.insert (studio2);
         studio.print ();
 
-        movie.save ();
-        cinema.save ();
-        movieStar.save ();
-        starsIn.save ();
-        movieExec.save ();
-        studio.save ();
+        //movie.save ();
+        //cinema.save ();
+        //movieStar.save ();
+        //starsIn.save ();
+        //movieExec.save ();
+        //studio.save ();
 
         movieStar.printIndex ();
 
