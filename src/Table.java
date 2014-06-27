@@ -361,6 +361,7 @@ public class Table
         
         //create our temporary result table using the combined attribute and domain arrays
         Table result = new Table ((name + count++), jtAttrs, jtDom, key);
+	Table tempTable = result;
         
         //cartesian product of the 2 arrays
         for(int i = 0; i < this.tuples.size(); i++){
@@ -368,36 +369,29 @@ public class Table
                 Comparable[] tempTup = new Comparable[result.attribute.length];
                 System.arraycopy(this.tuples.get(i), 0, tempTup, 0, this.tuples.get(i).length);
                 System.arraycopy(table2.tuples.get(m), 0, tempTup, this.tuples.get(i).length, table2.tuples.get(m).length);
-                result.insert(tempTup);
+                tempTable.insert(tempTup);
             }
         }
-        
-        Table tempTable = result;
-        //String [] tempStringArray = new String[1];
-        //build our predicate
-        for(int j = 0; j < t_attrs.length; j++){ 
-            int temp1 = tempTable.col(t_attrs[j]);
-            for(int q=0; q<u_attrs.length; q++){
-                for(int m=0; m<tempTable.tuples.size(); m++){
-                    Table tempTable2 = tempTable;
-                    Comparable [] tempTuple = tempTable2.tuples.get(m); 
-                    //int temp2 = tempTable.col(u_attrs[q]);
-                    //tempStringArray[0] = u_attrs[q];
-                    //Comparable [] tempTuple2 = tempTable.extract(tempTuple, tempStringArray);
-                    Comparable tempVal = tempTuple[tempTable2.col(u_attrs[q])];
-                    Table temp = tempTable2.select(p -> p[temp1].equals (tempVal));
-                    tempTable = temp;
-                    for(int h=0; h>temp.tuples.size();h++){
-                        result.insert(temp.tuples.get(h));
-                    }
-                }
-            }
-        }
-        
-        //perform select
-        
-        //get the full attribute list of each table
-        //iterate through them and compare the values of the attributes given in the join parameter
+
+	//fill our result table
+	for (int j = 0; j < t_attrs.length; j++) {
+	    //grab our column from first table
+	    int temp1 = tempTable.col(t_attrs[j]);
+	    int temp2 = tempTable.col(u_attrs[j]);e
+	    for (int m = 0; m < tempTable.tuples.size(); m++) {
+		//grab each tuple from our cartesian table
+		Comparable[] tempTuple = tempTable.tuples.get(m);
+		Comparable tempVal = tempTuple[tempTable.col(u_attrs[j])];
+		Table temp = tempTable.select(p -> p[temp1].equals(temp2));
+		//tempTable = temp;
+		out.println ();
+		temp.print();
+		for (int h = 0; h > temp.tuples.size(); h++) {
+		    result.insert(temp.tuples.get(h));
+		}
+	    }
+
+	}
 
         return result;
     } // join
